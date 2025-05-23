@@ -1,28 +1,39 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from 'express';
+import { CommonModule, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [FormsModule,CommonModule, NgIf],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  standalone: true
+  standalone: true,
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  loginData = {
+    email: '',
+    password: '',
+  };
+  errorMassage: string = '';
 
-  constructor() {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)])
+  constructor(private authServices: AuthService, private router: Router) {}
+
+  onLogin() {
+    this.errorMassage = '';
+    const { email, password } = this.loginData;
+    this.authServices.login(email, password).subscribe({
+      next: (res: any) => {
+        const tocken = res.token;
+        localStorage.setItem('token', tocken);
+
+        (this.router as any).navigate(['/profile']); // Fix: Added type assertion to access 'navigate' method on 'Router'.
+      },
+      error: (err) => {
+        this.errorMassage =
+          err.errors?.message || 'Login faild please try again';
+      },
     });
   }
-
-  onSubmit() {
-    if (this.loginForm.valid) {
-      console.log('Login successful', this.loginForm.value);
-    } else {
-      console.log('Login failed', this.loginForm.errors);
-    }
-  }
-};
+}
