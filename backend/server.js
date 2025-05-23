@@ -10,7 +10,7 @@ dotenv.config();
 const User = require("./models/User");
 
 const app = express();
-const PORT = 5000;
+const PORT = 3000;
 
 app.use(express.json());
 app.use(cors());
