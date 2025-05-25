@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormsModule,
+} from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Router } from 'express';
+import { Router } from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,CommonModule, NgIf, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   standalone: true,
@@ -18,7 +23,6 @@ export class LoginComponent {
     password: '',
   };
   errorMassage: string = '';
-isLoggedIn: any;
 
   constructor(private authServices: AuthService, private router: Router) {}
 
@@ -29,12 +33,12 @@ isLoggedIn: any;
       next: (res: any) => {
         const tocken = res.token;
         localStorage.setItem('token', tocken);
+        this.router.navigate(['']); // Navigate to profile page after successful login
 
-        (this.router as any).navigate(['/profile']); // Fix: Added type assertion to access 'navigate' method on 'Router'.
       },
       error: (err) => {
         this.errorMassage =
-          err.errors?.message || 'Login faild please try again';
+          err.error?.message || 'Login faild please try again';
       },
     });
   }
