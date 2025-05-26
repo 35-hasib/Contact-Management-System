@@ -27,7 +27,7 @@ export class SignupComponent {
       next: (res: any) => {
         this.successMessage = 'Signup successful! Please log in.';
         this.signupData = {name:'', email: '', password: '' }; // Clear the form
-        this.router.navigate(['/login']); // Redirect to login page
+        this.router.navigate(['/dashboard']); // Redirect to login page
       },
       error: (err) => {
         this.errorMessage =
