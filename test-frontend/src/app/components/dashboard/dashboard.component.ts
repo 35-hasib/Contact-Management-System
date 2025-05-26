@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from "../header/header.component";
-import { ContactListComponent } from "../contact-list/contact-list.component";
+import { ContactListComponent } from '../contact-list/contact-list.component';
 
 @Component({
   selector: 'app-dashboard',

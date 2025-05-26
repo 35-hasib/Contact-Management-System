@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AddContactComponent } from "../add-contact/add-contact.component";
+import { ContactsService } from '../../services/contact.service'; 
+import { Contact } from '../../models/contact.model'; 
 
 @Component({
   selector: 'app-contact-list',
@@ -10,132 +11,50 @@ import { AddContactComponent } from "../add-contact/add-contact.component";
   styleUrl: './contact-list.component.css',
   standalone: true,
 })
+export class ContactListComponent implements OnInit {
+  contacts: Contact[] = [];
 
-export class ContactListComponent {
-  contacts = [
-    {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+1 (555) 123-4567'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '+1 (555) 987-6543'
-    },
-    {
-      name: 'Hasibur Rahman',
-      email: 'hasib@example.com',
-      phone: '+8801571007636'
-    },
-    {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+1 (555) 123-4567'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '+1 (555) 987-6543'
-    },
-    {
-      name: 'Hasibur Rahman',
-      email: 'hasib@example.com',
-      phone: '+8801571007636'
-    },{
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+1 (555) 123-4567'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '+1 (555) 987-6543'
-    },
-    {
-      name: 'Hasibur Rahman',
-      email: 'hasib@example.com',
-      phone: '+8801571007636'
-    },{
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+1 (555) 123-4567'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '+1 (555) 987-6543'
-    },
-    {
-      name: 'Hasibur Rahman',
-      email: 'hasib@example.com',
-      phone: '+8801571007636'
-    },{
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+1 (555) 123-4567'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '+1 (555) 987-6543'
-    },
-    {
-      name: 'Hasibur Rahman',
-      email: 'hasib@example.com',
-      phone: '+8801571007636'
-    },{
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+1 (555) 123-4567'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '+1 (555) 987-6543'
-    },
-    {
-      name: 'Hasibur Rahman',
-      email: 'hasib@example.com',
-      phone: '+8801571007636'
-    },{
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '+1 (555) 123-4567'
-    },
-    {
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      phone: '+1 (555) 987-6543'
-    },
-    {
-      name: 'Hasibur Rahman',
-      email: 'hasib@example.com',
-      phone: '+8801571007636'
-    }
-  ];
-  constructor(private router: Router){}
-  
+  constructor(
+    private router: Router,
+    private contactsService: ContactsService
+  ) {}
+
+  ngOnInit() {
+    this.loadContacts();
+  }
+
+  loadContacts() {
+    this.contactsService.getContacts().subscribe({
+      next: (response: any) => {
+        this.contacts = response.contacts;
+      },
+      error: (err) => {
+        console.error('Error loading contacts', err);
+      }
+    });
+  }
 
   tableClicked(event: Event) {
     console.log('Table clicked:', event);
   }
 
-  editContact(contact: any, event: Event) {
+  editContact(contact: Contact, event: Event) {
     event.stopPropagation();
-    console.log('Editing contact:', contact);
+    this.router.navigate(['/edit-contact', contact._id]);
   }
 
-  deleteContact(phone: any, event: Event) {
+  deleteContact(contactId: string, event: Event) {
     event.stopPropagation();
-    console.log('Deleting contact:', phone);
-  
-    const target = event.target as HTMLElement;
-    const row = target.closest("tr");
-    if (row) {
-      row.remove();
+    
+    if (confirm('Are you sure you want to delete this contact?')) {
+      this.contactsService.deleteContact(contactId).subscribe({
+        next: () => {
+          this.contacts = this.contacts.filter(contact => contact._id !== contactId);
+        },
+        error: (err) => {
+          console.error('Error deleting contact', err);
+        }
+      });
     }
-    this.contacts = this.contacts.filter(contact => contact.phone !== phone);
   }
-  
 }

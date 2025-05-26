@@ -1,10 +1,9 @@
-
-
 export interface Contact {
-    id: string;
+    _id: string;
     name: string;
-    phone: string;
     email: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
+    phone: string;
+    userId: string;
+    createdAt?: string;
+    updatedAt?: string;
+  }

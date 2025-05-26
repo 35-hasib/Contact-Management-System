@@ -8,6 +8,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const User = require("./models/User");
+const Contact = require("./models/Contacts");
+
 
 const app = express();
 const PORT = 3000;
@@ -121,23 +123,55 @@ app.get("/api/profile", authenticateToken, async (req, res) => {
 });
 
 
-// const Contacts = require("./models/User");
-// app.post("/api/contacts", authenticateToken, async (req, res) => {
-//   try {
-//     const { name, email, phone } = req.body;
+//---------------------------------------------------------------------------------------------
+// Contacts API
+app.post("/api/contacts", authenticateToken, async (req, res) => {
+  try {
+    const { name, email, phone } = req.body;
 
-//     const newContact = new Contacts({
-//       name,
-//       email,
-//       phone,
-//       userId: req.user.userId, // Associate contact with the user
-//     });
+    const newContact = new Contact({
+      name,
+      email,
+      phone,
+      userId: req.user.userId, // associate with logged-in user
+    });
 
-//     await newContact.save();
+    await newContact.save();
 
-//     res.status(201).json({ message: "Contact created successfully" });
-//   } catch (error) {
-//     console.error("Error creating contact", error);
-//     res.status(500).json({ error: "Error creating contact" });
-//   }
-// });
+    res.status(201).json({ message: "Contact created successfully", contact: newContact });
+  } catch (error) {
+    console.error("Error creating contact", error);
+    res.status(500).json({ error: "Error creating contact" });
+  }
+});
+
+
+app.get("/api/contacts", authenticateToken, async (req, res) => {
+  try {
+    const contacts = await Contact.find({ userId: req.user.userId }).sort({ createdAt: -1 });
+    res.json({ contacts });
+  } catch (error) {
+    console.error("Error fetching contacts", error);
+    res.status(500).json({ error: "Error fetching contacts" });
+  }
+});
+
+app.delete("/api/contacts/:id", authenticateToken, async (req, res) => {
+  try {
+    const contact = await Contact.findOneAndDelete({ 
+      _id: req.params.id, 
+      userId: req.user.userId 
+    });
+
+    if (!contact) {
+      return res.status(404).json({ error: "Contact not found" });
+    }
+
+    res.json({ message: "Contact deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting contact", error);
+    res.status(500).json({ error: "Error deleting contact" });
+  }
+});
+
+

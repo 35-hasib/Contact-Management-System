@@ -1,33 +1,35 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
-import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ContactService {
+export class ContactsService {
+  
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-    constructor(private http: HttpClient) {}
-    
-    addContact(name: string, phone: string, email: string) {
-        const body = {
-        name: name,
-        email: email,
-        phone: phone,
-        };
-        return this.http.post(`${environment.apiUrl}/api/contacts`, body);
-    }
-    
-    getContacts() {
-        return this.http.get(`${environment.apiUrl}/api/contacts`);
-    }
-    
-    deleteContact(id: string) {
-        return this.http.delete(`${environment.apiUrl}/api/contacts/${id}`);
-    }
-    
-    searchContacts(query: string) {
-        return this.http.get(`${environment.apiUrl}/api/contacts/search?query=${query}`);
-    }
+  private getHeaders() {
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.authService.getToken()}`
+      })
+    };
+  }
+
+  createContact(name: string, email: string, phone: string) {
+    return this.http.post(`${environment.apiUrl}/api/contacts`, 
+      { name, email, phone }, 
+      this.getHeaders()
+    );
+  }
+
+  getContacts() {
+    return this.http.get(`${environment.apiUrl}/api/contacts`, this.getHeaders());
+  }
+
+  deleteContact(id: string) {
+    return this.http.delete(`${environment.apiUrl}/api/contacts/${id}`, this.getHeaders());
+  }
 }
