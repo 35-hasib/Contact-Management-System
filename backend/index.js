@@ -118,3 +118,25 @@ app.get("/api/profile", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Error fetching user profile" });
   }
 });
+
+
+// const Contacts = require("./models/User");
+// app.post("/api/contacts", authenticateToken, async (req, res) => {
+//   try {
+//     const { name, email, phone } = req.body;
+
+//     const newContact = new Contacts({
+//       name,
+//       email,
+//       phone,
+//       userId: req.user.userId, // Associate contact with the user
+//     });
+
+//     await newContact.save();
+
+//     res.status(201).json({ message: "Contact created successfully" });
+//   } catch (error) {
+//     console.error("Error creating contact", error);
+//     res.status(500).json({ error: "Error creating contact" });
+//   }
+// });

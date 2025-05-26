@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AddContactComponent } from "../add-contact/add-contact.component";
 
 @Component({
   selector: 'app-contact-list',
-  imports: [CommonModule, AddContactComponent],
+  imports: [CommonModule, RouterLink],
   templateUrl: './contact-list.component.html',
   styleUrl: './contact-list.component.css',
   standalone: true,
@@ -114,27 +114,28 @@ export class ContactListComponent {
       phone: '+8801571007636'
     }
   ];
-  showPopup: boolean | undefined;
   constructor(private router: Router){}
-  createContact() {
-    this.showPopup = true;
-  }
-
-  closePopup() {
-    this.showPopup = false;
-  }
+  
 
   tableClicked(event: Event) {
-    // Optional handler if needed
+    console.log('Table clicked:', event);
   }
 
   editContact(contact: any, event: Event) {
     event.stopPropagation();
-    // Logic for editing
+    console.log('Editing contact:', contact);
   }
 
-  deleteContact(contact: any, event: Event) {
+  deleteContact(phone: any, event: Event) {
     event.stopPropagation();
-    // Logic for deleting
+    console.log('Deleting contact:', phone);
+  
+    const target = event.target as HTMLElement;
+    const row = target.closest("tr");
+    if (row) {
+      row.remove();
+    }
+    this.contacts = this.contacts.filter(contact => contact.phone !== phone);
   }
+  
 }

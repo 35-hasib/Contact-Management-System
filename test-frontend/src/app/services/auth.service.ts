@@ -7,9 +7,7 @@ import { environment } from '../../environments/environment.development';
   providedIn: 'root',
 })
 export class AuthService {
-  static isLoggedIn() {
-    throw new Error('Method not implemented.');
-  }
+  
   constructor(private http: HttpClient, private router: Router) {}
 
   signUp(email: string, password: string) {

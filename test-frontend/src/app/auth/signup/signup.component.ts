@@ -31,7 +31,7 @@ export class SignupComponent {
       },
       error: (err) => {
         this.errorMessage =
-          err.error?.message || 'Signup failed. Please try again.';
+          err.error?.error || 'Signup failed. Please try again.';
       },
     });
   }
