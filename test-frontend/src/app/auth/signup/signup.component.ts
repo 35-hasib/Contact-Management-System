@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
 })
 export class SignupComponent {
-  signupData = { email: '', password: '' };
+  signupData = { name: '',email: '', password: '' };
   successMessage = '';
   errorMessage = '';
   constructor(private authService: AuthService, private router: Router) {}
@@ -21,12 +21,12 @@ export class SignupComponent {
     this.successMessage = ''; 
     this.errorMessage = '';
 
-    const { email, password } = this.signupData;
+    const { name, email, password } = this.signupData; // Fixed the variable name to 'name'
 
-    this.authService.signUp(email, password).subscribe({
+    this.authService.signUp(name, email, password).subscribe({
       next: (res: any) => {
         this.successMessage = 'Signup successful! Please log in.';
-        this.signupData = { email: '', password: '' }; // Clear the form
+        this.signupData = {name:'', email: '', password: '' }; // Clear the form
         this.router.navigate(['/login']); // Redirect to login page
       },
       error: (err) => {

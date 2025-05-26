@@ -10,8 +10,9 @@ export class AuthService {
   
   constructor(private http: HttpClient, private router: Router) {}
 
-  signUp(email: string, password: string) {
+  signUp(name: string, email: string, password: string) {
     const body = {
+      name: name,
       email: email,
       password: password,
     };
@@ -28,7 +29,6 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    this.router.navigate(['/login']);
   }
 
   isLoggedIn() {
@@ -38,4 +38,17 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('token');
   }
+  getProfile() {
+    const token = this.getToken();
+    return this.http.get<{ user: { name: string; email: string } }>(
+      `${environment.apiUrl}/api/profile`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  }
+  
+  
 }

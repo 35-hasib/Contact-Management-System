@@ -12,6 +12,32 @@
         </p>
       </div>
       <form class="space-y-6" (submit)="onSignup()" #signupForm="ngForm">
+        <!-- ✅ Full Name Field -->
+        <div class="relative bg-inherit">
+          <input
+            id="name"
+            type="text"
+            name="name"
+            required
+            minlength="2"
+            [(ngModel)]="signupData.name"
+            #nameRef="ngModel"
+            class="peer w-full h-10 px-3 rounded-lg border border-gray-300 text-gray-700 placeholder-transparent 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder=" "
+          />
+          <label 
+            for="name" 
+            class="absolute left-3 -top-3 text-sm text-gray-500 bg-white px-1 transition-all
+                  peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
+                  peer-focus:-top-3 peer-focus:text-blue-600 peer-focus:text-sm"
+          >
+            Full Name <span class="text-red-500">*</span>
+          </label>
+          <p class="text-sm text-red-500 mt-1" *ngIf="nameRef.invalid && (nameRef.dirty || nameRef.touched)">
+            Please enter your full name.
+          </p>
+        </div>
         <!-- Email Field -->
         <div class="relative bg-inherit">
           <input
@@ -19,6 +45,7 @@
             type="email"
             name="email"
             required
+            email
             [(ngModel)]="signupData.email"
             #emailRef="ngModel"
             class="peer w-full h-10 px-3 rounded-lg border border-gray-300 text-gray-700 placeholder-transparent 

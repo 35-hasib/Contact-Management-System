@@ -33,7 +33,7 @@ app.listen(PORT, () => {
 
 app.post("/api/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -41,6 +41,7 @@ app.post("/api/signup", async (req, res) => {
       return res.status(400).json({ error: "Email already in use " });
     }
     const newUser = new User({
+      name,
       email,
       password: await bcrypt.hash(password, 10), //hash the pasword
     });

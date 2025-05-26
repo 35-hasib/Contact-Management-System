@@ -33,7 +33,7 @@ export class LoginComponent {
       next: (res: any) => {
         const tocken = res.token;
         localStorage.setItem('token', tocken);
-        this.router.navigate(['']); // Navigate to profile page after successful login
+        this.router.navigate(['profile']); // Navigate to profile page after successful login
 
       },
       error: (err) => {
