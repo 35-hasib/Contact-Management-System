@@ -10,7 +10,6 @@ dotenv.config();
 const User = require("./models/User");
 const Contact = require("./models/Contacts");
 
-
 const app = express();
 const PORT = 3000;
 
@@ -115,13 +114,11 @@ app.get("/api/profile", authenticateToken, async (req, res) => {
     }
 
     return res.json({ user });
-    
   } catch (error) {
     console.error("Error fetching user profile", error);
     res.status(500).json({ error: "Error fetching user profile" });
   }
 });
-
 
 //---------------------------------------------------------------------------------------------
 // Contacts API
@@ -138,17 +135,20 @@ app.post("/api/contacts", authenticateToken, async (req, res) => {
 
     await newContact.save();
 
-    res.status(201).json({ message: "Contact created successfully", contact: newContact });
+    res
+      .status(201)
+      .json({ message: "Contact created successfully", contact: newContact });
   } catch (error) {
     console.error("Error creating contact", error);
     res.status(500).json({ error: "Error creating contact" });
   }
 });
 
-
 app.get("/api/contacts", authenticateToken, async (req, res) => {
   try {
-    const contacts = await Contact.find({ userId: req.user.userId }).sort({ createdAt: -1 });
+    const contacts = await Contact.find({ userId: req.user.userId }).sort({
+      createdAt: -1,
+    });
     res.json({ contacts });
   } catch (error) {
     console.error("Error fetching contacts", error);
@@ -156,11 +156,26 @@ app.get("/api/contacts", authenticateToken, async (req, res) => {
   }
 });
 
+app.get("/api/contacts/:id", authenticateToken, async (req, res) => {
+  try {
+    const contact = await Contact.findOne({
+      _id: req.params.id,
+      userId: req.user.userId,
+    });
+
+    if (!contact) {
+      return res.status(404).json({ error: "Contact not found" });
+    }
+
+    res.json({ contact });
+  } catch (error) {}
+});
+
 app.delete("/api/contacts/:id", authenticateToken, async (req, res) => {
   try {
-    const contact = await Contact.findOneAndDelete({ 
-      _id: req.params.id, 
-      userId: req.user.userId 
+    const contact = await Contact.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user.userId,
     });
 
     if (!contact) {
@@ -174,4 +189,25 @@ app.delete("/api/contacts/:id", authenticateToken, async (req, res) => {
   }
 });
 
+// for edit
+app.put("/api/contacts/:id", authenticateToken, async (req, res) => {
+  try {
+    const contact = await Contact.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        userId: req.user.userId,
+      },
+      req.body,
+      { new: true }
+    );
 
+    if (!contact) {
+      return res.status(404).json({ error: "Contact not found" });
+    }
+
+    res.json({ message: "Contact updated successfully", contact });
+  } catch (error) {
+    console.error("Error updating contact", error);
+    res.status(500).json({ error: "Error updating contact" });
+  }
+});
