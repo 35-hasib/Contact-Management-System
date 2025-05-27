@@ -76,7 +76,7 @@ app.post("/api/login", async (req, res) => {
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "1000h",
       }
     );
 
