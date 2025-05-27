@@ -1,0 +1,35 @@
+<div *ngIf="isLoading" class="flex justify-center items-center h-screen">
+    <p class="text-gray-600 text-lg animate-pulse">Loading contact details...</p>
+  </div>
+  
+  <div *ngIf="errorMessage" class="text-red-600 text-center mt-8">
+    {{ errorMessage }}
+  </div>
+  
+  <div *ngIf="contact" class="max-w-xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Contact Details</h2>
+  
+    <div class="mb-4">
+      <p class="text-gray-600"><span class="font-medium text-gray-800">Name:</span> {{ contact.name }}</p>
+    </div>
+  
+    <div class="mb-4">
+      <p class="text-gray-600"><span class="font-medium text-gray-800">Email:</span> {{ contact.email }}</p>
+    </div>
+  
+    <div class="mb-4">
+      <p class="text-gray-600"><span class="font-medium text-gray-800">Phone:</span> {{ contact.phone }}</p>
+    </div>
+  
+    <div *ngIf="contact.notes" class="mb-4">
+      <p class="text-gray-600"><span class="font-medium text-gray-800">Notes:</span> {{ contact.notes }}</p>
+    </div>
+  
+    <button
+      (click)="onBack()"
+      class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+    >
+      Back to Dashboard
+    </button>
+  </div>
+  

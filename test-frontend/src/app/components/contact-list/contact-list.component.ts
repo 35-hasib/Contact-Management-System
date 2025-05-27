@@ -34,8 +34,10 @@ export class ContactListComponent implements OnInit {
     });
   }
 
-  tableClicked(event: Event) {
+  tableClicked(contact: Contact,event: Event) {
     console.log('Table clicked:', event);
+    event.stopPropagation(); // Prevent event bubbling if needed
+    this.router.navigate(['/contact-details', contact._id]);
   }
 
   editContact(contact: Contact, event: Event) {

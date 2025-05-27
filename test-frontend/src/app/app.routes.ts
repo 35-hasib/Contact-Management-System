@@ -7,6 +7,7 @@ import { ProfileComponent } from './auth/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddContactComponent } from './components/add-contact/add-contact.component';
 import { EditContactComponent } from './components/edit-contact/edit-contact.component';
+import { ContactDetailsComponent } from './components/contact-details/contact-details.component';
 
 
 export const routes: Routes = [
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   {path : 'add-contact', component: AddContactComponent, canActivate: [authGuard] },
   { path: 'edit-contact/:id', component: EditContactComponent, canActivate: [authGuard]},
+  {path: 'contact-details/:id', component: ContactDetailsComponent, canActivate: [authGuard] },
   {path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' } 

@@ -26,8 +26,8 @@
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider bg-gray-50"></th>
             </tr>
           </thead>
-          <tbody (click)="tableClicked($event)" class="bg-white divide-y divide-gray-200 scroll-auto overflow-y-auto ">
-            <tr *ngFor="let contact of contacts" class="hover:bg-gray-50" id="{{contact.phone}}">
+          <tbody class="bg-white divide-y divide-gray-200 scroll-auto overflow-y-auto ">
+            <tr *ngFor="let contact of contacts" (click)="tableClicked(contact, $event)" class="hover:bg-gray-50" id="{{contact.phone}}">
               <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ contact.name }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ contact.email }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ contact.phone }}</td>
