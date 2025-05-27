@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-contact-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './contact-list.component.html',
   styleUrls: ['./contact-list.component.css']
 })
@@ -72,14 +72,18 @@ export class ContactListComponent implements OnInit {
     this.router.navigate(['/dashboard']);
   }
 
+  createContact() {
+    this.router.navigate(['dashboard/add-contact']);
+  }
+
   tableClicked(contact: Contact, event: Event) {
     event.stopPropagation();
-    this.router.navigate(['/contact-details', contact._id]);
+    this.router.navigate(['dashboard/contact-details', contact._id]);
   }
 
   editContact(contact: Contact, event: Event) {
     event.stopPropagation();
-    this.router.navigate(['/edit-contact', contact._id]);
+    this.router.navigate(['dashboard/edit-contact', contact._id]);
   }
 
   deleteContact(contactId: string, event: Event) {

@@ -37,7 +37,7 @@ export class AddContactComponent {
     this.contactsService.createContact(name, email, phone).subscribe({
       next: () => {
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard'],);
       },
       error: (err) => {
         this.isLoading = false;
