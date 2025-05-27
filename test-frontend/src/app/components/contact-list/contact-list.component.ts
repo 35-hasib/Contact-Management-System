@@ -17,6 +17,8 @@ export class ContactListComponent implements OnInit {
   filteredContacts: Contact[] = [];
   isSearchMode = false;
   searchQuery = '';
+  showDeleteModal = false;
+  contactToDelete: string | null = null;
 
   constructor(
     private router: Router,
@@ -86,17 +88,30 @@ export class ContactListComponent implements OnInit {
     this.router.navigate(['dashboard/edit-contact', contact._id]);
   }
 
-  deleteContact(contactId: string, event: Event) {
+  openDeleteModal(contactId: string, event: Event) {
     event.stopPropagation();
-    
-    if (confirm('Are you sure you want to delete this contact?')) {
-      this.contactsService.deleteContact(contactId).subscribe({
+    this.contactToDelete = contactId;
+    this.showDeleteModal = true;
+  }
+
+  cancelDelete() {
+    this.showDeleteModal = false;
+    this.contactToDelete = null;
+  }
+
+  confirmDelete() {
+    if (this.contactToDelete) {
+      this.contactsService.deleteContact(this.contactToDelete).subscribe({
         next: () => {
-          this.contacts = this.contacts.filter(contact => contact._id !== contactId);
+          this.contacts = this.contacts.filter(contact => contact._id !== this.contactToDelete);
           this.filterContacts();
+          this.showDeleteModal = false;
+          this.contactToDelete = null;
         },
         error: (err) => {
           console.error('Error deleting contact', err);
+          this.showDeleteModal = false;
+          this.contactToDelete = null;
         }
       });
     }
