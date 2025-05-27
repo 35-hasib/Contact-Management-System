@@ -52,7 +52,8 @@ export class EditContactComponent implements OnInit {
         this.contactId,
         this.contact.name,
         this.contact.email,
-        this.contact.phone
+        this.contact.phone,
+        this.contact.notes
       )
       .subscribe({
         next: () => {

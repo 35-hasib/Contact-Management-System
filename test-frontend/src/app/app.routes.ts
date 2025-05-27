@@ -3,7 +3,6 @@ import { LoginComponent } from './auth/login/login.component';
 import { loginGuard } from './guards/login.guard';
 import { SignupComponent } from './auth/signup/signup.component';
 import { authGuard } from './guards/auth.guard';
-import { ProfileComponent } from './auth/profile/profile.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddContactComponent } from './components/add-contact/add-contact.component';
 import { EditContactComponent } from './components/edit-contact/edit-contact.component';
@@ -22,7 +21,6 @@ export const routes: Routes = [
   {path: 'contact-details/:id', component: ContactDetailsComponent, canActivate: [authGuard] },
   ]
 },
-  {path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' } 
 ];

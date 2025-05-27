@@ -19,9 +19,9 @@ export class ContactsService {
     };
   }
 
-  createContact(name: string, email: string, phone: string) {
+  createContact(name: string, email: string, phone: string, notes: string) {
     return this.http.post(`${environment.apiUrl}/api/contacts`, 
-      { name, email, phone }, 
+      { name, email, phone, notes }, 
       this.getHeaders()
     );
   }
@@ -39,10 +39,10 @@ export class ContactsService {
     return this.http.get(`${environment.apiUrl}/api/contacts/${id}`, this.getHeaders());
   }
 
-  updateContact(id: string, name: string, email: string, phone: string) {
+  updateContact(id: string, name: string, email: string, phone: string, notes: string) {
     return this.http.put(
       `${environment.apiUrl}/api/contacts/${id}`,
-      { name, email, phone },
+      { name, email, phone, notes },
       this.getHeaders()
     );
   }

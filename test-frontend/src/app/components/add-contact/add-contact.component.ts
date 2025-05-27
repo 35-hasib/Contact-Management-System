@@ -32,9 +32,9 @@ export class AddContactComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    const { name, phone, email } = this.contact;
+    const { name, phone, email, notes } = this.contact;
 
-    this.contactsService.createContact(name, email, phone).subscribe({
+    this.contactsService.createContact(name, email, phone, notes).subscribe({
       next: () => {
         this.isLoading = false;
         this.router.navigate(['/dashboard'],);
