@@ -22,17 +22,20 @@ export class ContactListComponent implements OnInit {
   ngOnInit() {
     this.loadContacts();
   }
-
+  
   loadContacts() {
     this.contactsService.getContacts().subscribe({
       next: (response: any) => {
-        this.contacts = response.contacts;
+        this.contacts = response.contacts.sort((a: any, b: any) =>
+          a.name.localeCompare(b.name)
+        );
       },
       error: (err) => {
         console.error('Error loading contacts', err);
       }
     });
   }
+  
 
   tableClicked(contact: Contact,event: Event) {
     console.log('Table clicked:', event);
