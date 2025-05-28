@@ -1,3 +1,4 @@
 export const environment = {
-    apiUrl: 'http://localhost:3000',
+    production: true,
+    apiUrl: 'https://contact-management-system-8nyo.onrender.com',
 };
