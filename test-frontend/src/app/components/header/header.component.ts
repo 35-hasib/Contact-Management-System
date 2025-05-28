@@ -57,4 +57,7 @@ export class HeaderComponent implements OnInit {
   cancelLogout() {
     this.logoutModalVisible = false;
   }
+  dashboard() {
+    this.router.navigate(['/dashboard']);
+  }
 }
