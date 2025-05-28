@@ -1,14 +1,9 @@
-<!-- Container -->
 <div class="bg-white p-6 rounded-lg max-h-[100vh] overflow-y-auto relative">
   <!-- Header -->
   <div class="flex justify-between items-center mb-6">
     <h2 class="text-xl font-semibold text-gray-800">
-      <span *ngIf="!isSearchMode"
-        >Contacts ({{ filteredContacts.length }})</span
-      >
-      <span *ngIf="isSearchMode"
-        >Search Results ({{ filteredContacts.length }})</span
-      >
+      <span *ngIf="!isSearchMode">Contacts ({{ filteredContacts.length }})</span>
+      <span *ngIf="isSearchMode">Search Results ({{ filteredContacts.length }})</span>
     </h2>
 
     <div class="flex items-center space-x-4">
@@ -18,6 +13,7 @@
           type="text"
           placeholder="Search..."
           [(ngModel)]="searchQuery"
+          (input)="onSearchInput()"
           (keyup.enter)="onSearch()"
           class="border border-gray-300 rounded-full px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
         />
@@ -124,7 +120,7 @@
             <tr
               *ngFor="let contact of filteredContacts"
               (click)="tableClicked(contact, $event)"
-              class="hover:bg-gray-50"
+              class="hover:bg-gray-50 cursor-pointer"
             >
               <td
                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"

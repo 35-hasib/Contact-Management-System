@@ -4,6 +4,8 @@ import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../../services/contact.service';
 import { Contact } from '../../models/contact.model';
 import { FormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-contact-list',
@@ -19,6 +21,7 @@ export class ContactListComponent implements OnInit {
   searchQuery = '';
   showDeleteModal = false;
   contactToDelete: string | null = null;
+  private searchSubject = new Subject<string>();
 
   constructor(
     private router: Router,
@@ -31,6 +34,15 @@ export class ContactListComponent implements OnInit {
       this.searchQuery = params['q'] || '';
       this.isSearchMode = !!this.searchQuery;
       this.loadContacts();
+    });
+
+    // Setup real-time search with debounce
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(searchValue => {
+      this.filterContacts();
+      this.updateUrl();
     });
   }
 
@@ -48,9 +60,14 @@ export class ContactListComponent implements OnInit {
     });
   }
 
+  onSearchInput() {
+    this.searchSubject.next(this.searchQuery);
+  }
+
   filterContacts() {
     if (!this.searchQuery) {
       this.filteredContacts = [...this.contacts];
+      this.isSearchMode = false;
       return;
     }
 
@@ -60,18 +77,31 @@ export class ContactListComponent implements OnInit {
       contact.email.toLowerCase().includes(query) ||
       contact.phone.toLowerCase().includes(query)
     );
+    this.isSearchMode = true;
+  }
+
+  updateUrl() {
+    if (this.searchQuery.trim()) {
+      this.router.navigate([], { 
+        relativeTo: this.route,
+        queryParams: { q: this.searchQuery.trim() },
+        queryParamsHandling: 'merge'
+      });
+    } else {
+      this.clearSearch();
+    }
   }
 
   onSearch() {
-    this.router.navigate(['/dashboard'], { 
-      queryParams: { q: this.searchQuery.trim() },
-      queryParamsHandling: 'merge' 
-    });
+    this.filterContacts();
+    this.updateUrl();
   }
 
   clearSearch() {
     this.searchQuery = '';
-    this.router.navigate(['/dashboard']);
+    this.isSearchMode = false;
+    this.filterContacts();
+    this.router.navigate(['/dashboard'], { queryParams: { q: null }, queryParamsHandling: 'merge' });
   }
 
   createContact() {
