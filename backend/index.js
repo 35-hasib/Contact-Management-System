@@ -24,7 +24,13 @@ mongoose.connect(process.env.MONGODB_URL, {
 // API routes
 app.use("/api", authRoutes);
 app.use("/api/contacts", contactRoutes);
+app.get('/', (req, res) => {
+  res.send(`
+    Hello from Server !!
+  `);
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
