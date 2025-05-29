@@ -73,15 +73,11 @@
     class="text-center text-gray-500 py-10"
   >
     <div *ngIf="isSearchMode">
-      <div class="flex items-center justify-center">
-        <img class="h-60 md:h-80" src="emptycontacts.png" />
-      </div>
+      
       <strong>No contacts match your search.</strong>
     </div>
     <div class="mx-auto" *ngIf="!isSearchMode">
-      <div class="flex items-center justify-center">
-        <img class="h-60 md:h-80" src="emptycontacts.png" />
-      </div>
+      
       <strong>No contacts available.</strong>
     </div>
   </div>
