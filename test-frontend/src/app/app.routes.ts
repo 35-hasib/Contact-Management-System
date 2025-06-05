@@ -8,9 +8,11 @@ import { AddContactComponent } from './components/add-contact/add-contact.compon
 import { EditContactComponent } from './components/edit-contact/edit-contact.component';
 import { ContactDetailsComponent } from './components/contact-details/contact-details.component';
 import { ContactListComponent } from './components/contact-list/contact-list.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 export const routes: Routes = [
+  { path: '', component: HomeComponent, canActivate: [loginGuard] },
   { path: 'login', component: LoginComponent, canActivate: [loginGuard] },
   { path: 'signup', component: SignupComponent, canActivate: [loginGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] ,children: [
@@ -21,6 +23,6 @@ export const routes: Routes = [
     {path: 'contact-details/:id', component: ContactDetailsComponent, canActivate: [authGuard] },
   ]
 },
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' } 
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '' } 
 ];

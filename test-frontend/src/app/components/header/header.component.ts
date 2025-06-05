@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
   confirmLogout() {
     this.logoutModalVisible = false;
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
   }
 
   cancelLogout() {
